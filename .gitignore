@@ -1,0 +1,23 @@
+# Binários compilados
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/bin/
+/dist/
+
+# Saída de testes e cobertura
+*.test
+*.out
+coverage.*
+
+# Workspace do Go
+go.work
+go.work.sum
+
+# Diretórios de IDE / SO
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
