@@ -58,6 +58,32 @@ O que esses números dizem:
   por vez — e o tempo vai para ~50s, igual ao da V2. O regime é decidido logo no início e
   se mantém até o fim. O semáforo evita o deadlock, mas não evita a fila.
 
+## Verificação
+
+As três versões paralelas foram executadas sob o detector de corridas do Go, sem nenhum
+acesso concorrente não-sincronizado detectado:
+
+```
+$ go run -race ./ParaleloV1    # exit 0 — nenhum DATA RACE
+$ go run -race ./ParaleloV2    # exit 0 — nenhum DATA RACE
+$ go run -race ./ParaleloV3    # exit 0 — nenhum DATA RACE
+```
+
+Os contadores compartilhados (`numOfPhilosophersEating` e
+`maxNumOfPhilosophersEatingSimult`) estão protegidos por mutex, e os garfos, por serem
+canais, já carregam a sincronização necessária.
+
+O repositório também passa limpo pelas ferramentas padrão:
+
+```
+$ gofmt -l .        # nenhuma saída
+$ go vet ./...      # exit 0
+$ go build ./...    # exit 0
+```
+
+No Windows, o `-race` exige cgo e um compilador C no PATH (por exemplo MinGW-w64);
+sem isso o Go recusa a flag com `-race requires cgo`.
+
 ## Como rodar
 
 Requer Go 1.21 ou superior (as versões paralelas usam o pacote `slices`).
